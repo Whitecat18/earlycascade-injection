@@ -23,3 +23,6 @@ cargo run --release Notepad.exe .\w64-exec-calc-shellcode.bin
 
 You can replace any shellcode if you need. I Just used calc.bin shellcode !
 
+By [@5mukx](https://x.com/5mukx)
+
+For More PoC Codes. Please Check: [Rust for Malware Development](https://github.com/Whitecat18/Rust-for-Malware-Development/) Repository. 
