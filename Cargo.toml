@@ -1,7 +1,16 @@
 [package]
-name = "earlycascade-injection"
+name = "earlycascade"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
+authors = ["@5mukx"]
 
-[dependencies]
-winapi = { version = "0.3.9", features = ["winbase", "fileapi", "heapapi", "libloaderapi", "processthreadsapi", "memoryapi", "winnt", "handleapi", "errhandlingapi"] }
+[dependencies.windows-sys]
+version = "0.61.2"
+features = [
+    "Win32_Foundation",
+    "Win32_System_Threading",
+    "Win32_System_Memory",
+    "Win32_Security",
+    "Win32_System_Diagnostics_Debug",
+    "Win32_System_LibraryLoader",
+]
